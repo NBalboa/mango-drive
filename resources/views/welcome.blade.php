@@ -1,3 +1,3 @@
 <x-layouts.app>
-    @livewire('HelloWorld', ['user' => $user])
+    <h1 class="text-red-400">Hello</h1>
 </x-layouts.app>

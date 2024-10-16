@@ -7,19 +7,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/c393acf5ae.js" crossorigin="anonymous"></script>
     <title>Document</title>
+    @vite('resources/css/app.css')
 </head>
 
-<body>
-    <nav>
-        Navbar
-    </nav>
-    <main>
-        {{ $slot }}
-    </main>
-    <footer>
-        Footer
-    </footer>
+<body class="bg-white">
+
 </body>
+@livewire('nav')
+<main>
+    {{ $slot }}
+</main>
 
 </html>
