@@ -12,12 +12,13 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-white">
+<body>
 
 </body>
 @livewire('nav')
 <main>
     {{ $slot }}
 </main>
+<x-footer />
 
 </html>
