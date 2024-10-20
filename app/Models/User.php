@@ -12,15 +12,25 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
         'email',
+        'last_name',
+        'middle_name',
+        'phone',
         'password',
+        'role'
     ];
 
     /**

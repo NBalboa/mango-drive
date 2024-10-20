@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CashierRequest extends FormRequest
+class AddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,14 +21,10 @@ class CashierRequest extends FormRequest
      */
     public function rules(): array
     {
-        return array_merge(
-            [
-                'first_name' => 'required|string',
-                'last_name' => 'required|string',
-                'email' => 'required|email|unique:users',
-                'phone' => 'required|string|unique:users'
-            ],
-            (new AddressRequest())->rules()
-        );
+        return [
+            'barangay' => 'required|string',
+            'city' => 'required|string',
+            'province' => 'required|string'
+        ];
     }
 }

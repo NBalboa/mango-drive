@@ -25,6 +25,27 @@
                         <x-form-label for='phone'>Phone</x-form-label>
                         <x-form-input id="phone" name='phone' type='text' />
                     </x-form-group>
+                    <x-form-group>
+                        <x-form-label for='province'>Province</x-form-label>
+                        <x-form-select name="province" id="province">
+                        </x-form-select>
+                    </x-form-group>
+                    <x-form-group>
+                        <x-form-label for='city'>City</x-form-label>
+                        <x-form-select name="city" id="city">
+                            <option selected value="">Choose City</option>
+                        </x-form-select>
+                    </x-form-group>
+                    <x-form-group>
+                        <x-form-label for='barangay'>Barangay</x-form-label>
+                        <x-form-select name="barangay" id="barangay">
+                            <option selected value="">Choose Barangay</option>
+                        </x-form-select>
+                    </x-form-group>
+                    <x-form-group>
+                        <x-form-label for='street'>Street/Building/House/Lot/Block</x-form-label>
+                        <x-form-input id="street" name='street' type='text' />
+                    </x-form-group>
 
                     <div class="card-footer">
                         <button id="submitCashier" type="submit" class="btn btn-primary">Submit</button>

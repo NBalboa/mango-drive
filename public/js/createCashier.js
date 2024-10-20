@@ -19,6 +19,13 @@ $(document).ready(function () {
             `
         );
 
+        let Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+        });
+
         $(elements).each(function () {
             const element = $(this);
             if (element.hasClass("is-invalid")) {
@@ -37,11 +44,14 @@ $(document).ready(function () {
                     const element = $(this);
                     element.val("");
                 });
-                alert(res.success);
+                Toast.fire({
+                    icon: "success",
+                    title: res.success,
+                });
             },
-            error: function (res) {
-                if (res.status === 422) {
-                    const errors = res.responseJSON.errors;
+            error: function (err) {
+                if (err.status === 422) {
+                    const errors = err.responseJSON.errors;
                     for (const key in errors) {
                         const value = errors[key];
 
@@ -53,6 +63,13 @@ $(document).ready(function () {
                                 `<span class="error invalid-feedback">${value}</span>`
                             );
                     }
+                } else {
+                    Toast.fire({
+                        icon: "error",
+                        title: "Something went wrong",
+                    });
+
+                    console.log(err);
                 }
             },
             complete: function () {
