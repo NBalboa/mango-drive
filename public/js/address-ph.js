@@ -58,6 +58,11 @@ $(document).ready(function () {
             type: "GET",
             success: function (res) {
                 const cities = JSON.parse(res);
+
+                select_city.prepend(
+                    `<option value="" selected>Choose City</option>`
+                );
+
                 cities.forEach((city) => {
                     if (city.province_code === province_code) {
                         select_city.append(
@@ -67,10 +72,6 @@ $(document).ready(function () {
                         );
                     }
                 });
-
-                select_city.prepend(
-                    `<option value="" selected>Choose City</option>`
-                );
             },
         });
     });
@@ -84,6 +85,11 @@ $(document).ready(function () {
             type: "GET",
             success: function (res) {
                 const barangays = JSON.parse(res);
+
+                select_barangay.prepend(
+                    `<option value="" selected>Choose Barangay</option>`
+                );
+
                 barangays.forEach((barangay) => {
                     if (barangay.city_code === city_code) {
                         select_barangay.append(
@@ -93,10 +99,6 @@ $(document).ready(function () {
                         );
                     }
                 });
-
-                select_barangay.prepend(
-                    `<option value="" selected>Choose Barangay</option>`
-                );
             },
         });
     });

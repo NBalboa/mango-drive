@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CashierRequest extends FormRequest
+class StaffRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,6 +23,7 @@ class CashierRequest extends FormRequest
     {
         return array_merge(
             [
+                'role' => 'required|numeric',
                 'first_name' => 'required|string',
                 'last_name' => 'required|string',
                 'email' => 'required|email|unique:users',

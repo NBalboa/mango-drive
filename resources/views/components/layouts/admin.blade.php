@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
-    <script src="{{ asset('/js/createCashier.js') }}"></script>
+    <script src="{{ asset('/js/createStaff.js') }}"></script>
     <script src="{{ asset('/js/address-ph.js') }}"></script>
 </head>
 
@@ -45,7 +45,10 @@
                 <x-side-nav-item to='/admin/dashboard' name="Dashboard">
                     <ion-icon class="nav-icon" name="bar-chart-outline"></ion-icon>
                 </x-side-nav-item>
-                <x-side-nav-item to='/admin/cashiers' name="Cashier">
+                <x-side-nav-item to='/admin/staffs' name="Staffs">
+                    <ion-icon class="nav-icon" name="person-outline"></ion-icon>
+                </x-side-nav-item>
+                <x-side-nav-item name="Cashier">
                     <ion-icon class="nav-icon" name="card-outline"></ion-icon>
                 </x-side-nav-item>
                 <x-side-nav-item name="Riders">

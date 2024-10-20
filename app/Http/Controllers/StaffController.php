@@ -3,33 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
-use App\Http\Requests\AddressRequest;
-use App\Http\Requests\CashierRequest;
+use App\Http\Requests\StaffRequest;
 use App\Models\Address;
 use App\Models\User;
-use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class CashierController extends Controller
+class StaffController extends Controller
 {
+
     public function index()
     {
-        return view('Admin.cashier');
+        $staffs  = User::with('addresses')->staffs()->get();
+        return view('Admin.staff', [
+            'staffs' => $staffs,
+            'ADMIN' => UserRole::ADMIN->value,
+            'CASHIER' => UserRole::CASHIER->value,
+            'RIDER' => UserRole::RIDER->value
+        ]);
     }
+
     public function create()
     {
-        return view('Admin.cashier-create');
+        return view('Admin.staff-create', [
+            'ADMIN' => UserRole::ADMIN->value,
+            'CASHIER' => UserRole::CASHIER->value,
+            'RIDER' => UserRole::RIDER->value
+        ]);
     }
-    public function store(CashierRequest $request)
+
+    public function store(StaffRequest $request)
     {
 
         DB::beginTransaction();
         try {
             $user = User::create([
-                'role' => UserRole::CASHIER,
+                'role' => $request->input('role'),
                 'remember_token' => Str::random(10),
                 'password' => Hash::make('password'),
                 'first_name' => $request->input('first_name'),
@@ -48,12 +59,13 @@ class CashierController extends Controller
             ]);
 
             DB::commit();
-            return response()->json(['success' => 'Cashier created successfully!'], 201);
+            return response()->json(['success' => 'Staff created successfully'], 201);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => $e], 400);
         }
     }
+
     public function edit() {}
 
     public function update() {}

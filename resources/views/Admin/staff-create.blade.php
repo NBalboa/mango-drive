@@ -2,7 +2,7 @@
     <x-content-header>Register Cashier</x-content-header>
     <x-content>
         <div class="card card-default">
-            <form id="createCashier" action="{{ route('cashiers.store') }}" method="POST">
+            <form id="createStaff" action="{{ route('staffs.store') }}" method="POST">
                 @csrf
                 <div class="card-body">
                     <x-form-group>
@@ -46,9 +46,17 @@
                         <x-form-label for='street'>Street/Building/House/Lot/Block</x-form-label>
                         <x-form-input id="street" name='street' type='text' />
                     </x-form-group>
-
+                    <x-form-group>
+                        <x-form-label for='role'>Staff Role</x-form-label>
+                        <x-form-select name="role" id="role">
+                            <option selected value="">Choose Role</option>
+                            <option value="{{ $ADMIN }}">Admin</option>
+                            <option value="{{ $CASHIER }}">Cashier</option>
+                            <option value="{{ $RIDER }}">Rider</option>
+                        </x-form-select>
+                    </x-form-group>
                     <div class="card-footer">
-                        <button id="submitCashier" type="submit" class="btn btn-primary">Submit</button>
+                        <button id="submitStaff" type="submit" class="btn btn-primary">Submit</button>
                     </div>
             </form>
         </div>

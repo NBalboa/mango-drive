@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CashierController;
+use App\Http\Controllers\StaffController;
 use App\Livewire\Pages\Welcome;
 use Illuminate\Support\Facades\Route;
 
@@ -10,6 +11,6 @@ Route::get('/admin/dashboard', function () {
     return view('Admin.dashboard');
 });
 
-Route::get('/admin/cashiers', [CashierController::class, 'index'])->name('cashiers.index');
-Route::get('/admin/cashiers/create', [CashierController::class, 'create'])->name('cashiers.create');
-Route::post('/admin/cashiers/create', [CashierController::class, 'store'])->name('cashiers.store');
+Route::get('/admin/staffs', [StaffController::class, 'index'])->name('staffs.index');
+Route::get('/admin/staffs/create', [StaffController::class, 'create'])->name('staffs.create');
+Route::post('/admin/staffs/create', [StaffController::class, 'store'])->name('staffs.store');

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#createCashier").on("submit", function (e) {
+    $("#createStaff").on("submit", function (e) {
         e.preventDefault();
         $("#spinner").show();
         const first_name = $("#first_name");
@@ -7,8 +7,17 @@ $(document).ready(function () {
         const middle_name = $("#middle_name");
         const email = $("#email");
         const phone = $("#phone");
-        const button = $(submitCashier);
-        const elements = [first_name, last_name, middle_name, email, phone];
+        const role = $("#role");
+
+        const button = $("#submitStaff");
+        const elements = [
+            first_name,
+            last_name,
+            middle_name,
+            email,
+            phone,
+            role,
+        ];
         button.hide();
 
         button.parent().append(
