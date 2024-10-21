@@ -1,30 +1,22 @@
 $(document).ready(function () {
-    $("#createStaff").on("submit", function (e) {
+    $("#editStaff").on("submit", function (e) {
         e.preventDefault();
         $("#spinner").show();
         const first_name = $("#first_name");
         const last_name = $("#last_name");
         const middle_name = $("#middle_name");
-        const email = $("#email");
-        const phone = $("#phone");
-        const role = $("#role");
         const barangay = $("#barangay");
         const city = $("#city");
         const province = $("#province");
-        const street = $("#street");
 
         const button = $("#submitStaff");
         const elements = [
             first_name,
             last_name,
             middle_name,
-            email,
-            phone,
-            role,
             barangay,
             city,
             province,
-            street,
         ];
         button.hide();
 
@@ -54,13 +46,9 @@ $(document).ready(function () {
 
         $.ajax({
             url: $(this).attr("action"),
-            method: "POST",
+            method: "PUT",
             data: $(this).serialize(),
             success: function (res) {
-                $(elements).each(function () {
-                    const element = $(this);
-                    element.val("");
-                });
                 Toast.fire({
                     icon: "success",
                     title: res.success,

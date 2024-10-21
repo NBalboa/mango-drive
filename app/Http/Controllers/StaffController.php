@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\IsDeleted;
 use App\Enums\UserRole;
 use App\Http\Requests\StaffRequest;
+use App\Http\Requests\UpdateStaffRequest;
 use App\Models\Address;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,7 +18,7 @@ class StaffController extends Controller
 
     public function index()
     {
-        $staffs  = User::with('addresses')->staffs()->get();
+        $staffs  = User::with('addresses')->notDeleted()->staffs()->get();
         return view('Admin.staff', [
             'staffs' => $staffs,
             'ADMIN' => UserRole::ADMIN->value,
@@ -66,9 +68,55 @@ class StaffController extends Controller
         }
     }
 
-    public function edit() {}
+    public function edit(User $staff)
+    {
+        $address = Address::where('user_id', $staff->id)->first();
+        return view('Admin.staff-edit', [
+            'ADMIN' => UserRole::ADMIN->value,
+            'CASHIER' => UserRole::CASHIER->value,
+            'RIDER' => UserRole::RIDER->value,
+            'address' => $address,
+            'staff' => $staff
+        ]);
+    }
 
-    public function update() {}
+    public function update(UpdateStaffRequest $request, User $staff)
+    {
+        $staff->update([
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'middle_name' => $request->input('middle_name'),
+        ]);
 
-    public function delete() {}
+        $address = Address::where('user_id', $staff->id)->first();
+
+        $address->update([
+            'street' => $request->input('street'),
+            'barangay' => $request->input('barangay'),
+            'city' => $request->input('city'),
+            'province' => $request->input('province')
+        ]);
+
+        return response()->json(['success' => 'Staff updated successfully'], 201);
+    }
+
+
+    public function profile(User $staff)
+    {
+        $address = Address::address($staff->id);
+        return view('Admin.staff-profile', [
+            'ADMIN' => UserRole::ADMIN->value,
+            'CASHIER' => UserRole::CASHIER->value,
+            'RIDER' => UserRole::RIDER->value,
+            'staff' => $staff,
+            'address' => $address
+        ]);
+    }
+
+    public function delete(User $staff)
+    {
+        $staff->is_deleted = IsDeleted::YES->value;
+        $staff->save();
+        return redirect()->route('staffs.index');
+    }
 }

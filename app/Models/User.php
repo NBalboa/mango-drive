@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\IsDeleted;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -26,10 +27,13 @@ class User extends Authenticatable
         return $this->hasMany(Address::class);
     }
 
+    public function scopeNotDeleted($query)
+    {
+        return $this->where('is_deleted', '=', IsDeleted::NO->value);
+    }
+
     public function scopeStaffs($query)
     {
-
-
         return $query->whereIn('role', $this->STAFF_ROLES);
     }
 

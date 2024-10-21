@@ -18,7 +18,11 @@
                         @foreach ($staffs as $staff)
                             <x-table-body-row>
 
-                                <x-table-body-item>{{ $staff->last_name }}, {{ $staff->first_name }}</x-table-body-item>
+                                <x-table-body-item>
+                                    <a href="{{ route('staffs.profile', $staff->id) }}">
+                                        {{ $staff->last_name }}, {{ $staff->first_name }}
+                                    </a>
+                                </x-table-body-item>
                                 <x-table-body-item>
                                     @if ($staff->addresses->first())
                                         {{ $staff->addresses->first()->street }},

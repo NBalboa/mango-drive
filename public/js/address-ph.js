@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(async function () {
     const barangay_url =
         "https://raw.githubusercontent.com/isaacdarcilla/philippine-addresses/refs/heads/main/barangay.json";
 
@@ -8,98 +8,137 @@ $(document).ready(function () {
     const province_url =
         "https://raw.githubusercontent.com/isaacdarcilla/philippine-addresses/refs/heads/main/province.json";
 
-    const default_code = "0973";
+    const PROVINCES = await getDataToJSON(province_url);
+    const CITIES = await getDataToJSON(city_url);
+    const BARANGAYS = await getDataToJSON(barangay_url);
 
     const select_province = $("#province");
     const select_city = $("#city");
     const select_barangay = $("#barangay");
-    $.ajax({
-        url: province_url,
-        type: "GET",
-        success: function (res) {
-            const provinces = JSON.parse(res);
-            provinces.forEach((province) => {
-                if (province.province_code === default_code) {
-                    select_province.append(
-                        `<option value="${province.province_name}" data-code="${province.province_code}" selected>${province.province_name}</option>`
-                    );
-                } else {
-                    select_province.append(
-                        `<option value="${province.province_name}" data-code=${province.province_code}>${province.province_name}</option>`
-                    );
-                }
-            });
-        },
-    });
 
-    $.ajax({
-        url: city_url,
-        type: "GET",
-        success: function (res) {
-            const cities = JSON.parse(res);
-            cities.forEach((city) => {
-                if (city.province_code === default_code) {
-                    select_city.append(
-                        `
-                        <option value="${city.city_name}" data-code="${city.city_code}">${city.city_name}</option>
-                        `
-                    );
-                }
-            });
-        },
-    });
+    showAllProvinces(PROVINCES, select_province);
+    showAllCities(CITIES, select_city, select_province);
+    showAllBarangays(BARANGAYS, select_barangay, select_city);
 
     $(select_province).on("change", function () {
-        const province_code = $(this).find("option:selected").data("code");
-        $(select_city).empty();
-
-        $.ajax({
-            url: city_url,
-            type: "GET",
-            success: function (res) {
-                const cities = JSON.parse(res);
-
-                select_city.prepend(
-                    `<option value="" selected>Choose City</option>`
-                );
-
-                cities.forEach((city) => {
-                    if (city.province_code === province_code) {
-                        select_city.append(
-                            `
-                        <option value="${city.city_name}" data-code="${city.city_code}">${city.city_name}</option>
-                        `
-                        );
-                    }
-                });
-            },
-        });
+        showAllCities(CITIES, select_city, select_province);
+        showAllBarangays(BARANGAYS, select_barangay, select_city);
     });
 
     $(select_city).on("change", function () {
-        const city_code = $(this).find("option:selected").data("code");
-        $(select_barangay).empty();
-
-        $.ajax({
-            url: barangay_url,
-            type: "GET",
-            success: function (res) {
-                const barangays = JSON.parse(res);
-
-                select_barangay.prepend(
-                    `<option value="" selected>Choose Barangay</option>`
-                );
-
-                barangays.forEach((barangay) => {
-                    if (barangay.city_code === city_code) {
-                        select_barangay.append(
-                            `
-                        <option value="${barangay.brgy_name}">${barangay.brgy_name}</option>
-                        `
-                        );
-                    }
-                });
-            },
-        });
+        showAllBarangays(BARANGAYS, select_barangay, select_city);
     });
+
+    function showAllProvinces(datas, element) {
+        const name = $(element).val();
+
+        element.empty();
+
+        element.append(
+            `<option value="" ${
+                name ? "" : "selected"
+            }>Choose Province</option>`
+        );
+
+        datas.forEach((data) => {
+            if (data.province_name === name) {
+                element.append(
+                    `<option value="${data.province_name}" data-code="${data.province_code}" selected>${data.province_name}</option>`
+                );
+            } else {
+                element.append(
+                    `<option value="${data.province_name}" data-code="${data.province_code}">${data.province_name}</option>`
+                );
+            }
+        });
+    }
+
+    function showAllCities(datas, element, province) {
+        const currentProvince = $(province).val();
+        const currentCity = $(element).val();
+
+        const code = getProvinceCodeByName(PROVINCES, currentProvince);
+
+        element.empty();
+        element.append(
+            `
+                <option ${
+                    currentCity ? "" : "selected"
+                } value = "">Choose City</option>
+            `
+        );
+        datas.forEach((data) => {
+            if (data.province_code === code) {
+                if (data.city_name === currentCity) {
+                    element.append(
+                        `
+                    <option value="${data.city_name}" data-code="${data.city_code}" selected >${data.city_name}</option>
+                    `
+                    );
+                }
+                element.append(
+                    `
+                    <option value="${data.city_name}" data-code="${data.city_code}">${data.city_name}</option>
+                    `
+                );
+            }
+        });
+    }
+
+    function showAllBarangays(datas, element, city) {
+        const currentCity = $(city).val();
+        const currentBarangay = $(element).val();
+        const code = getCityCodeByName(CITIES, currentCity);
+        element.empty();
+        element.append(
+            `
+                <option ${
+                    currentBarangay ? "" : "selected"
+                } value="">Choose Barangay</option>
+            `
+        );
+
+        datas.forEach((data) => {
+            if (data.city_code === code) {
+                if (data.brgy_name === currentBarangay) {
+                    element.append(
+                        `
+                        <option value="${data.brgy_name}" selected>${data.brgy_name}</option>
+                        `
+                    );
+                }
+
+                element.append(
+                    `
+                        <option value="${data.brgy_name}">${data.brgy_name}</option>
+                        `
+                );
+            }
+        });
+    }
+
+    function getProvinceCodeByName(provinces, name) {
+        const foundProvince = provinces.find(
+            (province) => province.province_name === name
+        );
+        return foundProvince ? foundProvince.province_code : null;
+    }
+
+    function getCityCodeByName(cities, name) {
+        const foundCity = cities.find((city) => city.city_name === name);
+        return foundCity ? foundCity.city_code : null;
+    }
+
+    async function getDataToJSON(url) {
+        try {
+            const res = await $.ajax({
+                url: url,
+                type: "GET",
+            });
+            return JSON.parse(res);
+        } catch (err) {
+            console.error("Error:", err);
+            return null; // Or handle the error as needed
+        }
+    }
 });

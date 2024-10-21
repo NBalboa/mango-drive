@@ -14,7 +14,10 @@ class Address extends Model
         'province',
         'user_id'
     ];
-
+    public function scopeAddress($query, $user_id)
+    {
+        return $query->where('user_id', $user_id)->first();
+    }
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

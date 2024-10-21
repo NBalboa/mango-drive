@@ -20,7 +20,16 @@
     <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
-    <script src="{{ asset('/js/createStaff.js') }}"></script>
+    @if (Route::is('staffs.create'))
+        <script src="{{ asset('/js/createStaff.js') }}"></script>
+    @endif
+    @if (Route::is('staffs.edit'))
+        <script src="{{ asset('/js/editStaff.js') }}"></script>
+    @endif
+    @if (Route::is('staffs.profile'))
+        <script src="{{ asset('/js/confirmDeleteStaff.js') }}"></script>
+    @endif
+
     <script src="{{ asset('/js/address-ph.js') }}"></script>
 </head>
 
