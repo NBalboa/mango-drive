@@ -1,23 +1,32 @@
 $(document).ready(function () {
     const preview = $("#preview");
+    const button = $("#updateSubmitProduct");
+    const name = $("#name");
+    const description = $("#description");
+    const price = $("#price");
+    const category = $("#category");
+    const quantity = $("#quantity");
+    const image = $("#image");
+    const supplier = $("#supplier");
+    const elements = [
+        name,
+        description,
+        price,
+        category,
+        quantity,
+        image,
+        supplier,
+    ];
 
-    $("#createProduct").on("submit", async function (e) {
+    let Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+    });
+
+    $("#editProduct").on("submit", async function (e) {
         e.preventDefault();
-        const button = $("#submitProduct");
-        const name = $("#name");
-        const description = $("#description");
-        const price = $("#price");
-        const category = $("#category");
-        const quantity = $("#quantity");
-        const image = $("#image");
-
-        const elements = [name, description, price, category, quantity, image];
-        let Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-        });
 
         $(elements).each(function () {
             const element = $(this);
@@ -38,7 +47,7 @@ $(document).ready(function () {
             `
         );
 
-        const formData = new FormData($(this)[0]);
+        const formData = new FormData(e.target);
 
         try {
             const res = await $.ajax({
@@ -76,7 +85,7 @@ $(document).ready(function () {
             } else {
                 Toast.fire({
                     icon: "error",
-                    title: "Something went wrong",
+                    title: err.responseJSON.message,
                 });
 
                 console.log(err);
@@ -86,21 +95,5 @@ $(document).ready(function () {
             button.parent().children().last().remove();
             preview.css("display", "none");
         }
-    });
-
-    const quantity = $("#quantity");
-    const supplier = $("#supplier");
-    $("input[data-bootstrap-switch]").bootstrapSwitch({
-        onText: "Yes",
-        offText: "No",
-        onSwitchChange: function (e, state) {
-            if (state) {
-                quantity.parent().show();
-                supplier.parent().show();
-            } else {
-                quantity.parent().hide();
-                supplier.parent().hide();
-            }
-        },
     });
 });

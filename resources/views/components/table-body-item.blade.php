@@ -1,1 +1,1 @@
-<td>{{ $slot }}</td>
+<td class="align-middle">{{ $slot }}</td>

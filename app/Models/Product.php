@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\IsAvailable;
+use App\Enums\IsDeleted;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -17,13 +19,25 @@ class Product extends Model
         'sold_by_quantity',
         'image'
     ];
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function supplier()
+
+    public function stock()
     {
-        return $this->belongsTo(Supplier::class, 'supplier_id');
+        return $this->hasOne(Stock::class);
+    }
+
+    public function scopeNotDeleted($query)
+    {
+        $query->where('is_deleted', '=', IsDeleted::NO->value);
+    }
+
+    public function scopeIsAvailable($query)
+    {
+        $query->where('is_available', '=', IsAvailable::YES->value);
     }
 }

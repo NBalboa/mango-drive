@@ -1,13 +1,11 @@
 <?php
 
-use App\Http\Controllers\CashierController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Middleware\IsStaffExist;
 use App\Livewire\Pages\Welcome;
-use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Welcome::class);
@@ -31,6 +29,10 @@ Route::middleware([IsStaffExist::class])->group(function () {
 Route::get('/admin/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/admin/products/create', [ProductController::class, 'create'])->name('products.create');
 Route::post('/admin/products/create', [ProductController::class, 'store'])->name('products.store');
+Route::put('/admin/products/availability/{product}', [ProductController::class, 'updateAvailabity'])->name('products.updateAvailabity');
+Route::get('/admin/products/{product}', [ProductController::class, 'profile'])->name('products.profile');
+Route::post('/admin/products/edit/{product}', [ProductController::class, 'update'])->name('products.update');
+Route::get('/admin/products/edit/{product}', [ProductController::class, 'edit'])->name('products.edit');
 
 Route::get('/admin/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
 Route::post('/admin/suppliers/create', [SupplierController::class, 'store'])->name('suppliers.store');

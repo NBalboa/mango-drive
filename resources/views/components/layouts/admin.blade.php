@@ -37,6 +37,17 @@
         <script src="{{ asset('/js/createSupplier.js') }}"></script>
     @endif
 
+    @if (Route::is('products.edit'))
+        <script src="{{ asset('/js/filePreview.js') }}"></script>
+        <script src="{{ asset('/js/createCategory.js') }}"></script>
+        <script src="{{ asset('/js/createSupplier.js') }}"></script>
+        <script src="{{ asset('/js/editProduct.js') }}"></script>
+    @endif
+
+    @if (Route::is('products.index') || Route::is('products.profile'))
+        <script src="{{ asset('/js/updateAvailable.js') }}"></script>
+    @endif
+
     <script src="{{ asset('/js/address-ph.js') }}"></script>
 </head>
 
@@ -106,9 +117,9 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-    @if (Route::is('products.create'))
-        <script src="{{ asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
-        <script src="{{ asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
+    <script src="{{ asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+    @if (Route::is('products.create') || Route::is('products.edit'))
         <script>
             $(function() {
                 bsCustomFileInput.init();
